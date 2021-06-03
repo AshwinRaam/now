@@ -17,15 +17,34 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 	"now/funcs"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
 func continueEntry(cmd *cobra.Command) {
-	tags, _ := cmd.Flags().GetStringSlice("tags")
-	entry := funcs.Continue(tags)
-	funcs.AppendEntry(entry)
+	record := funcs.ReadLastEntry(1)
+	status := strings.Trim(record[0][3], " ")
+	if status == "bstarted" {
+		tags, _ := cmd.Flags().GetStringSlice("tags")
+		entry := funcs.Continue(tags)
+		funcs.AppendEntry(entry)
+	} else if status == "completed" {
+		fmt.Println()
+		fmt.Println("You haven't taken any break to continue from.")
+		fmt.Println("Last completed Task:")
+		funcs.PrintEntries(record)
+	} else if status == "started" {
+		fmt.Println()
+		fmt.Println("You haven't taken any break to continue from.")
+		fmt.Println("Task currently going on:")
+		funcs.PrintEntries(record)
+	} else {
+		fmt.Println()
+		fmt.Println("You haven't taken any break to continue from.")
+	}
 }
 
 // continueCmd represents the continue command

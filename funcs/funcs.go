@@ -81,3 +81,9 @@ func ReadLastEntry(n int) [][]string {
 		return record
 	}
 }
+
+func PrintEntries(records [][]string) {
+	for _, record := range records {
+		fmt.Println(strings.Join(record, ">"))
+	}
+}

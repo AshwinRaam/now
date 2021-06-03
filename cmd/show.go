@@ -19,7 +19,6 @@ package cmd
 import (
 	"fmt"
 	"now/funcs"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -49,9 +48,7 @@ now show -c n (Shows last n entries of the day)
 			fmt.Print("-")
 		}
 		fmt.Println()
-		for _, record := range records {
-			fmt.Println(strings.Join(record, ">"))
-		}
+		funcs.PrintEntries(records)
 		for i := 0; i < 20; i++ {
 			fmt.Print("-")
 		}

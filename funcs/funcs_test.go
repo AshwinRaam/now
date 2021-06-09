@@ -64,7 +64,7 @@ func TestAppendEntry(t *testing.T) {
 	t.Run("multiple entry append", func(t *testing.T) {
 		tags := []string{"coding", "work", "personal"}
 		entry := Doing("coding now", tags)
-		entry2 := Doing("hair checking", tags)
+		entry2 := Doing("checking", tags)
 		AppendEntry(entry)
 		AppendEntry(entry2)
 		f, err := os.OpenFile(home+db, os.O_RDONLY, 0600)

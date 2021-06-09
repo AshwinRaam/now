@@ -18,54 +18,47 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"now/funcs"
+	"time"
 
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
 
-// showCmd represents the show command
-var showCmd = &cobra.Command{
-	Use:   "show",
-	Short: "show commands displays entires.",
-	Long: `show command displays entires.
+// timeCmd represents the time command
+var timeCmd = &cobra.Command{
+	Use:   "time",
+	Short: "time shows the time we spend on each task",
+	Long: `time shows how time time we spend on each task by subtracting the current time
+	with the task started time.
 
-Example:
-
-now show (Shows the last entry)
-now show --count n (Shows last n entries of the day)
-now show -c n (Shows last n entries of the day)
-
-`,
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		n, _ := cmd.Flags().GetInt("count")
-		var records [][]string
-		if n > 0 {
-			records = funcs.ReadLastEntry(n)
-		} else {
-			records = funcs.ReadLastEntry(1)
+		var db = fmt.Sprintf("/%s.csv", time.Now().Format("2006-01-02"))
+		home, err := homedir.Dir()
+		if err != nil {
+			log.Panic(err)
 		}
-		for i := 0; i < 20; i++ {
-			fmt.Print("-")
-		}
-		fmt.Printf("\n")
-		funcs.PrintEntries(records)
-		for i := 0; i < 20; i++ {
-			fmt.Print("-")
-		}
-		fmt.Printf("\n")
+		home = home + "/nowData"
+		filepath := home + db
+		fmt.Println(funcs.TimeIt(filepath))
+
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(showCmd)
-	showCmd.Flags().IntP("count", "c", -1, "entry display count")
+	rootCmd.AddCommand(timeCmd)
+
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// showCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// timeCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// showCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// timeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

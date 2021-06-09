@@ -114,3 +114,27 @@ func TestContinue(t *testing.T) {
 
 	assert(t, got, want)
 }
+
+func TestTimeIt(t *testing.T) {
+	cts := time.Now()
+	mts := cts.Add(-time.Minute * 25)
+	task := "doing something"
+	tags := []string{"math", "work", "studies"}
+	entry := fmt.Sprintf("%s > %s > %s > started", mts.Format("2006-01-02 15:04:05"), task, strings.Trim(fmt.Sprint(tags), "[]"))
+	filepath := "test1.csv"
+	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		log.Panic(err)
+	}
+	writebuffer := bufio.NewWriter(f)
+	writebuffer.WriteString(fmt.Sprintln(entry))
+	writebuffer.Flush()
+	f.Close()
+	want := "25 minutes"
+	got := TimeIt(filepath)
+	/* err = os.Remove(filepath)
+	if err != nil {
+		fmt.Println(err)
+	}*/
+	assert(t, got, want)
+}

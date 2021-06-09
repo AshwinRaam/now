@@ -47,11 +47,12 @@ now show -c n (Shows last n entries of the day)
 		for i := 0; i < 20; i++ {
 			fmt.Print("-")
 		}
-		fmt.Println()
+		fmt.Printf("\n")
 		funcs.PrintEntries(records)
 		for i := 0; i < 20; i++ {
 			fmt.Print("-")
 		}
+		fmt.Printf("\n")
 	},
 }
 
